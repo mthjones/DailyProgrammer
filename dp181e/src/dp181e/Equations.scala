@@ -9,10 +9,10 @@ object Equations {
 
   object Equation {
     def parse(s: String): Option[Equation] = {
-      val equationRegex = """(?:\s*y\s*=\s*)?([+-]?\d+(?:[.]\d+)?)x\s*([+-]\s*\d+(?:[.]\d+)?)?""".r
-      s match {
-        case equationRegex(slope, offset) =>
-          Some(Equation(slope.toDouble, if (offset == null) 0 else offset.replaceAll("\\s+", "").toDouble))
+      val equationRegex = """(?:y=)?([+-]?\d+(?:[.]\d+)?)x([+-]\d+(?:[.]\d+)?)?""".r
+      s.replaceAll("\\s+", "") match {
+        case equationRegex(slope, null) => Some(Equation(slope.toDouble, 0))
+        case equationRegex(slope, offset) => Some(Equation(slope.toDouble, offset.toDouble))
         case _ => None
       }
     }
